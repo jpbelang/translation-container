@@ -1,5 +1,6 @@
 package ca.eloas.translets.protocols.smtp;
 
+import ca.eloas.translets.api.IncomingRequest;
 import ca.eloas.translets.container.Receiver;
 import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.RejectException;
@@ -36,7 +37,7 @@ class DefaultMessageHandler implements MessageHandler {
     @Override
     public void data(InputStream data) throws RejectException, TooMuchDataException, IOException {
 
-        receiver.receive();
+        receiver.receive(new SMTPIncomingRequest() );
     }
 
     @Override

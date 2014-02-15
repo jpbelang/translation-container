@@ -5,8 +5,12 @@ package ca.eloas.translets.container;
  */
 public interface ProtocolHandler {
 
-    void send();
+    void deploy(Container container);
+    void undeploy(Container container);
 
+    void send();
     public void setReceiver(Receiver r);
+
+
 
 }

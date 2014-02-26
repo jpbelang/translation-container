@@ -1,13 +1,18 @@
 package ca.eloas.translets.container;
 
+import ca.eloas.translets.container.events.EventBus;
+
 /**
  * @author JP
  */
 public interface Container {
 
-    void start();
+    void start() throws ContainerException;
     void stop();
 
     // Experimental
-    void addContext(TransletContext c);
+    void addContext(Deployment c);
+    void addProtocolHandler(Deployment c);
+
+    EventBus getEventBus();
 }

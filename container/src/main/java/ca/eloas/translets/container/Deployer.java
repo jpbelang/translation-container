@@ -5,6 +5,4 @@ package ca.eloas.translets.container;
  */
 public interface Deployer {
 
-    void deploy(DeploymentManager manager);
-    void undeploy(DeploymentManager manager);
 }

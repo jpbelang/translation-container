@@ -1,9 +1,11 @@
 package ca.eloas.translets.container.impl;
 
 import ca.eloas.translets.container.Container;
-import ca.eloas.translets.container.ProtocolHandler;
-import ca.eloas.translets.container.ProtocolHandlerFactory;
-import ca.eloas.translets.container.TransletContext;
+import ca.eloas.translets.container.ContainerException;
+import ca.eloas.translets.container.Deployer;
+import ca.eloas.translets.container.Deployment;
+import ca.eloas.translets.container.DeploymentManager;
+import ca.eloas.translets.container.events.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +13,39 @@ import java.util.List;
 /**
  * @author JP
  */
-public class ContainerImpl implements Container {
+public class ContainerImpl implements Container, DeploymentManager {
 
-    private List<TransletContext> contexts = new ArrayList<TransletContext>();
-    private List<ProtocolHandlerFactory> protocolHandlers = new ArrayList<ProtocolHandlerFactory>();
+    private final EventBus bus;
+    private List<Deployment> contexts = new ArrayList<>();
+    private List<Deployment> protocolHandlers = new ArrayList<>();
+
+    public ContainerImpl(EventBus bus) {
+
+        this.bus = bus;
+    }
 
     @Override
-    public void start() {
+    public void start() throws ContainerException {
 
-        for (ProtocolHandlerFactory protocolHandler : protocolHandlers) {
+        try {
+            for (Deployment protocolHandler : protocolHandlers) {
 
+                protocolHandler.deploy(this);
+            }
 
+            for (Deployment context : contexts) {
+
+                context.deploy(this);
+            }
+
+        } catch (Exception e) {
+            throw new ContainerException(e);
         }
+    }
 
-        for (TransletContext context : contexts) {
-
-            context.deploy(this);
-        }
-
+    @Override
+    public Deployer attach(Object o) {
+        return null;
     }
 
     @Override
@@ -37,8 +54,15 @@ public class ContainerImpl implements Container {
     }
 
     @Override
-    public void addContext(TransletContext c) {
+    public void addContext(Deployment c) {
 
         contexts.add(c);
     }
+
+    @Override
+    public void addProtocolHandler(Deployment c) {
+
+        protocolHandlers.add(c);
+    }
+
 }

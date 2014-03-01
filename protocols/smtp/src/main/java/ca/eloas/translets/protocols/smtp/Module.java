@@ -1,9 +1,12 @@
 package ca.eloas.translets.protocols.smtp;
 
 import ca.eloas.translets.container.Container;
+import ca.eloas.translets.container.IngressProtocolHandler;
 import ca.eloas.translets.container.events.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+
+import javax.inject.Singleton;
 
 /**
  * @author JP
@@ -11,18 +14,19 @@ import com.google.inject.Provides;
 public class Module extends AbstractModule {
 
 
-    private Container container;
 
-    public Module(Container container) {
-        this.container = container;
+    public Module() {
     }
 
     @Override
     protected void configure() {
 
+        binder().requireExplicitBindings();
+
+        bind(IngressProtocolHandler.class).to(SMTPProtocolHandler.class).in(Singleton.class);;
     }
 
-    @Provides
+  /*  @Provides
     public Container container() {
 
         return container;
@@ -33,4 +37,13 @@ public class Module extends AbstractModule {
 
         return container.getEventBus();
     }
+*/
+/*
+    @Provides
+    public IngressProtocolHandler mh() {
+
+        return new SMTPProtocolHandler();
+    }
+*/
+
 }

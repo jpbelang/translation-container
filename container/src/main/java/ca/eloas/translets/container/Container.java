@@ -12,7 +12,7 @@ public interface Container {
 
     // Experimental
     void addContext(Deployment c);
-    void addProtocolHandler(Deployment c);
+    void addIngressProtocolHandler(String modulename, String directory);
 
     EventBus getEventBus();
 }

@@ -2,7 +2,7 @@ package ca.eloas.translets.protocols.smtp;
 
 
 import ca.eloas.translets.container.Container;
-import ca.eloas.translets.container.ProtocolHandler;
+import ca.eloas.translets.container.IngressProtocolHandler;
 import ca.eloas.translets.container.ProtocolShutdownEvent;
 import ca.eloas.translets.container.ProtocolShutdownHandler;
 import ca.eloas.translets.container.ProtocolStartupEvent;
@@ -16,51 +16,43 @@ import javax.inject.Inject;
 /**
  * @author JP
  */
-public class SMTPProtocolHandler implements ProtocolHandler, ProtocolStartupHandler, ProtocolShutdownHandler {
+public class SMTPProtocolHandler implements IngressProtocolHandler, ProtocolStartupHandler, ProtocolShutdownHandler {
 
-    private final EventBus bus;
-    private final SMTPServer smtpServer;
+    private  EventBus bus;
+    private  SMTPServer smtpServer;
     private Receiver receiver;
 
     @Inject
-    public SMTPProtocolHandler(EventBus bus, final Receiver receiver) {
+    public SMTPProtocolHandler(EventBus bus) {
 
         this.bus = bus;
         bus.addHandler(ProtocolStartupEvent.getType(), this);
         bus.addHandler(ProtocolShutdownEvent.getType(), this);
 
-        smtpServer = new SMTPServer(new DefaultMessageHandlerFactory(receiver));
     }
 
-    @Override
-    public void deploy(Container container) {
-
-    }
-
-    @Override
-    public void undeploy(Container container) {
-
-    }
-
-    @Override
-    public void send() {
-
-    }
-
-    @Override
-    public void setReceiver(Receiver r) {
-
-        this.receiver = r;
-    }
 
     @Override
     public void onProtocolStartup(ProtocolStartupEvent event) {
 
+        smtpServer.start();
     }
 
     @Override
     public void onProtocolShutdown(ProtocolShutdownEvent event) {
 
+        smtpServer.stop();
     }
 
+    @Override
+    public void deploy(Receiver r) {
+
+        smtpServer = new SMTPServer(new DefaultMessageHandlerFactory(r));
+        smtpServer.setPort(2525);
+    }
+
+    public void undeploy() {
+
+
+    }
 }

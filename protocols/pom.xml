@@ -17,5 +17,6 @@
 
     <modules>
         <module>smtp</module>
+        <module>http</module>
     </modules>
 </project>

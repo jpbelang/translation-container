@@ -8,4 +8,9 @@ public class ContainerException extends RuntimeException {
 
             super(e);
     }
+
+    public ContainerException(String s) {
+
+        super(s);
+    }
 }

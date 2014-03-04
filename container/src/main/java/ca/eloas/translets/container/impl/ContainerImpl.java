@@ -20,34 +20,24 @@ public class ContainerImpl implements Container, DeploymentManager {
 
     private final EventBus bus;
     private final DeploymentFactory factory;
+    private final ConfigurationManager configurationManager;
     private List<Deployment> contexts = new ArrayList<>();
     private List<Deployment> protocolHandlers = new ArrayList<>();
 
     @Inject
-    public ContainerImpl(DeploymentFactory fac, EventBus bus) {
+    public ContainerImpl(DeploymentFactory fac, ConfigurationManager cm, EventBus bus) {
 
         this.bus = bus;
         this.factory = fac;
+        this.configurationManager = cm;
     }
 
     @Override
     public void start() throws ContainerException {
 
-        try {
-            for (Deployment protocolHandler : protocolHandlers) {
-
-                protocolHandler.deploy(this);
-            }
-
-            for (Deployment context : contexts) {
-
-                context.deploy(this);
-            }
-
-            bus.fireEvent(new ProtocolStartupEvent(this));
-        } catch (Exception e) {
-            throw new ContainerException(e);
-        }
+        configurationManager.configure(this);
+        protocolHandlers.forEach(x -> x.deploy(this));
+        bus.fireEvent(new ProtocolStartupEvent(this));
     }
 
     @Override
@@ -67,9 +57,9 @@ public class ContainerImpl implements Container, DeploymentManager {
     }
 
     @Override
-    public void addIngressProtocolHandler(String modulename, String directory) {
+    public void addIngressProtocolHandlerDeployment(Deployment deployment) {
 
-        protocolHandlers.add(factory.createIngressDeployment(modulename, directory));
+        protocolHandlers.add(deployment);
     }
 
     @Override

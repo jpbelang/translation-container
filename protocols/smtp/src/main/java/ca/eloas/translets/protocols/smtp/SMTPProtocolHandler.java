@@ -9,6 +9,7 @@ import ca.eloas.translets.container.ProtocolStartupEvent;
 import ca.eloas.translets.container.ProtocolStartupHandler;
 import ca.eloas.translets.container.Receiver;
 import ca.eloas.translets.container.events.EventBus;
+import ca.eloas.translets.container.events.Registrations;
 import org.subethamail.smtp.server.SMTPServer;
 
 import javax.inject.Inject;
@@ -22,13 +23,12 @@ public class SMTPProtocolHandler implements IngressProtocolHandler, ProtocolStar
     private  SMTPServer smtpServer;
     private Receiver receiver;
 
+    private Registrations registrations = new Registrations();
+
     @Inject
     public SMTPProtocolHandler(EventBus bus) {
 
         this.bus = bus;
-        bus.addHandler(ProtocolStartupEvent.getType(), this);
-        bus.addHandler(ProtocolShutdownEvent.getType(), this);
-
     }
 
 
@@ -46,6 +46,10 @@ public class SMTPProtocolHandler implements IngressProtocolHandler, ProtocolStar
 
     @Override
     public void deploy(Receiver r) {
+
+        registrations.add(
+                bus.addHandler(ProtocolStartupEvent.getType(), this),
+                bus.addHandler(ProtocolShutdownEvent.getType(), this));
 
         smtpServer = new SMTPServer(new DefaultMessageHandlerFactory(r));
         smtpServer.setPort(2525);

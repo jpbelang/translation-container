@@ -15,10 +15,6 @@ public class Main {
 
         Container c = injector.getInstance(Container.class);
 
-        c.addIngressProtocolHandler(
-                "ca.eloas.translets.protocols.smtp.Module",
-                "/Users/jpbelang/Git/eloas/translets/protocols/smtp/target/smtp-1.0-SNAPSHOT");
-
         c.start();
     }
 }

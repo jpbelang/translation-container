@@ -3,31 +3,31 @@ package ca.eloas.translets.container;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
+import java.util.Properties;
+
 /**
  * @author JP
  */
 abstract public class AbstractDeployment<T> implements Deployment {
 
+    private final Properties properties;
     private Injector parentInjector;
 
-    final private String pluginDirectory;
-    final private String pluginNameModule;
     private Injector childInjector;
     private T component;
     private PluginClassLoader classLoader;
 
-    public AbstractDeployment(Injector parent, String pluginModuleName, String pluginDirectory) {
+    public AbstractDeployment(Injector parent, Properties p) {
         this.parentInjector = parent;
-        this.pluginNameModule = pluginModuleName;
-        this.pluginDirectory = pluginDirectory;
-        this.classLoader = new PluginClassLoader(AbstractDeployment.class.getClassLoader(), pluginDirectory);
+        this.properties = p;
+        this.classLoader = new PluginClassLoader(AbstractDeployment.class.getClassLoader(), properties.getProperty("directory"));
     }
 
     @Override
     public void deploy(Container container) throws DeploymentException {
 
         try {
-            Module module = (Module) classLoader.loadClass(pluginNameModule).newInstance();
+            Module module = (Module) classLoader.loadClass(properties.getProperty("moduleName")).newInstance();
             childInjector = parentInjector.createChildInjector(module);
 
             component = createComponent(childInjector);
@@ -44,5 +44,9 @@ abstract public class AbstractDeployment<T> implements Deployment {
     @Override
     public void undeploy(Container manager) {
 
+    }
+
+    protected Properties getProperties() {
+        return properties;
     }
 }

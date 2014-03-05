@@ -13,6 +13,7 @@ import ca.eloas.translets.container.events.Registrations;
 import org.subethamail.smtp.server.SMTPServer;
 
 import javax.inject.Inject;
+import java.util.Properties;
 
 /**
  * @author JP
@@ -45,7 +46,7 @@ public class SMTPProtocolHandler implements IngressProtocolHandler, ProtocolStar
     }
 
     @Override
-    public void deploy(Receiver r) {
+    public void deploy(Properties p, Receiver r) {
 
         registrations.add(
                 bus.addHandler(ProtocolStartupEvent.getType(), this),

@@ -2,10 +2,12 @@ package ca.eloas.translets.container;
 
 import com.google.inject.assistedinject.Assisted;
 
+import java.util.Properties;
+
 /**
  * @author JP
  */
 public interface DeploymentFactory {
 
-    IngressProtocolHandlerDeployment createIngressDeployment( @Assisted("pluginModuleName") String pluginModuleName, @Assisted("directory") String pluginDirectory);
+    IngressProtocolHandlerDeployment createIngressDeployment( Properties p );
 }

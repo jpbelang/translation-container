@@ -10,4 +10,5 @@ import java.util.Properties;
 public interface DeploymentFactory {
 
     IngressProtocolHandlerDeployment createIngressDeployment( Properties p );
+    EgressProtocolHandlerDeployment createEgressDeployment( Properties p );
 }

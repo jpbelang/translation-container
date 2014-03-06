@@ -10,11 +10,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-
         Injector injector = Guice.createInjector(new ParentModule());
-
         Container c = injector.getInstance(Container.class);
-
         c.start();
     }
 }

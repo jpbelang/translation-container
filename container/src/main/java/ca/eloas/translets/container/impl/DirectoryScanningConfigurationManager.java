@@ -48,6 +48,20 @@ public class DirectoryScanningConfigurationManager implements ConfigurationManag
                     e.printStackTrace();
                 }
             }
+
+            if (file.getName().endsWith(".egress.properties")) {
+
+                try {
+
+                    Properties p = new Properties();
+                    p.load(file.toURI().toURL().openStream());
+                    c.addEgressProtocolHandlerDeployment(factory.createEgressDeployment(p));
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 

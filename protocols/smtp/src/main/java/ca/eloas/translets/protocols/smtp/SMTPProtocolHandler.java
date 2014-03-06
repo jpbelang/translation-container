@@ -53,7 +53,7 @@ public class SMTPProtocolHandler implements IngressProtocolHandler, ProtocolStar
                 bus.addHandler(ProtocolShutdownEvent.getType(), this));
 
         smtpServer = new SMTPServer(new DefaultMessageHandlerFactory(r));
-        smtpServer.setPort(2525);
+        smtpServer.setPort(Integer.parseInt(p.getProperty("port", "2525")));
     }
 
     public void undeploy() {

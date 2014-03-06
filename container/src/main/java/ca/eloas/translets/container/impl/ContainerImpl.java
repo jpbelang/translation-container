@@ -22,7 +22,9 @@ public class ContainerImpl implements Container, DeploymentManager {
     private final DeploymentFactory factory;
     private final ConfigurationManager configurationManager;
     private List<Deployment> contexts = new ArrayList<>();
-    private List<Deployment> protocolHandlers = new ArrayList<>();
+    private List<Deployment> egressHandlers = new ArrayList<>();
+    private List<Deployment> ingressHandlers = new ArrayList<>();
+
 
     @Inject
     public ContainerImpl(DeploymentFactory fac, ConfigurationManager cm, EventBus bus) {
@@ -36,7 +38,8 @@ public class ContainerImpl implements Container, DeploymentManager {
     public void start() throws ContainerException {
 
         configurationManager.configure(this);
-        protocolHandlers.forEach(x -> x.deploy(this));
+        ingressHandlers.forEach(x -> x.deploy(this));
+        egressHandlers.forEach(x -> x.deploy(this));
         bus.fireEvent(new ProtocolStartupEvent(this));
     }
 
@@ -59,7 +62,13 @@ public class ContainerImpl implements Container, DeploymentManager {
     @Override
     public void addIngressProtocolHandlerDeployment(Deployment deployment) {
 
-        protocolHandlers.add(deployment);
+        ingressHandlers.add(deployment);
+    }
+
+    @Override
+    public void addEgressProtocolHandlerDeployment(Deployment deployment) {
+
+        ingressHandlers.add(deployment);
     }
 
     @Override

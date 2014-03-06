@@ -11,7 +11,9 @@ import ca.eloas.translets.container.events.EventBus;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author JP
@@ -22,8 +24,8 @@ public class ContainerImpl implements Container, DeploymentManager {
     private final DeploymentFactory factory;
     private final ConfigurationManager configurationManager;
     private List<Deployment> contexts = new ArrayList<>();
-    private List<Deployment> egressHandlers = new ArrayList<>();
-    private List<Deployment> ingressHandlers = new ArrayList<>();
+    private Map<String, Deployment> egressHandlers = new HashMap<>();
+    private Map<String, Deployment> ingressHandlers = new HashMap<>();
 
 
     @Inject
@@ -38,8 +40,8 @@ public class ContainerImpl implements Container, DeploymentManager {
     public void start() throws ContainerException {
 
         configurationManager.configure(this);
-        ingressHandlers.forEach(x -> x.deploy(this));
-        egressHandlers.forEach(x -> x.deploy(this));
+        ingressHandlers.forEach((x, y) -> y.deploy(this));
+        egressHandlers.forEach((x,y) -> y.deploy(this));
         bus.fireEvent(new ProtocolStartupEvent(this));
     }
 
@@ -60,15 +62,15 @@ public class ContainerImpl implements Container, DeploymentManager {
     }
 
     @Override
-    public void addIngressProtocolHandlerDeployment(Deployment deployment) {
+    public void addIngressProtocolHandlerDeployment(String name, Deployment deployment) {
 
-        ingressHandlers.add(deployment);
+        ingressHandlers.put(name, deployment);
     }
 
     @Override
-    public void addEgressProtocolHandlerDeployment(Deployment deployment) {
+    public void addEgressProtocolHandlerDeployment(String name, Deployment deployment) {
 
-        ingressHandlers.add(deployment);
+        egressHandlers.put(name, deployment);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class DirectoryScanningConfigurationManager implements ConfigurationManag
 
                     Properties p = new Properties();
                     p.load(file.toURI().toURL().openStream());
-                    c.addIngressProtocolHandlerDeployment(factory.createIngressDeployment(p));
+                    c.addIngressProtocolHandlerDeployment(p.getProperty("name"), factory.createIngressDeployment(p));
                 } catch (Exception e) {
 
                     e.printStackTrace();
@@ -55,7 +55,7 @@ public class DirectoryScanningConfigurationManager implements ConfigurationManag
 
                     Properties p = new Properties();
                     p.load(file.toURI().toURL().openStream());
-                    c.addEgressProtocolHandlerDeployment(factory.createEgressDeployment(p));
+                    c.addEgressProtocolHandlerDeployment(p.getProperty("name"), factory.createEgressDeployment(p));
                 } catch (Exception e) {
 
                     e.printStackTrace();

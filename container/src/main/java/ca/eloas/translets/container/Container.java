@@ -12,8 +12,8 @@ public interface Container {
 
     // Experimental
     void addContext(Deployment c);
-    void addIngressProtocolHandlerDeployment(Deployment d);
-    void addEgressProtocolHandlerDeployment(Deployment d);
+    void addIngressProtocolHandlerDeployment(String name, Deployment d);
+    void addEgressProtocolHandlerDeployment(String name, Deployment d);
 
     EventBus getEventBus();
 }

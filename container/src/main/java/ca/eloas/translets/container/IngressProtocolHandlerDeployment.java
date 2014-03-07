@@ -14,7 +14,11 @@ public class IngressProtocolHandlerDeployment extends AbstractDeployment<Ingress
 
     @Inject
     public IngressProtocolHandlerDeployment(Injector i, @Assisted Properties p) {
-        super(i, p);
+        this(i, p, new PluginClassLoader(AbstractDeployment.class.getClassLoader(), p.getProperty("directory")));
+    }
+
+    IngressProtocolHandlerDeployment(Injector i, Properties p, ClassLoader loader) {
+        super(i, p, loader);
     }
 
     @Override

@@ -14,7 +14,11 @@ public class EgressProtocolHandlerDeployment extends AbstractDeployment<EgressPr
 
     @Inject
     public EgressProtocolHandlerDeployment(Injector i, @Assisted Properties p) {
-        super(i, p);
+        this(i, p, new PluginClassLoader(AbstractDeployment.class.getClassLoader(), p.getProperty("directory")));
+    }
+
+    EgressProtocolHandlerDeployment(Injector i, @Assisted Properties p, ClassLoader loader) {
+        super(i, p, loader);
     }
 
     @Override

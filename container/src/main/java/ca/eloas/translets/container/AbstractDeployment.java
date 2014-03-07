@@ -15,12 +15,12 @@ abstract public class AbstractDeployment<T> implements Deployment {
 
     private Injector childInjector;
     private T component;
-    private PluginClassLoader classLoader;
+    private ClassLoader classLoader;
 
-    public AbstractDeployment(Injector parent, Properties p) {
+    public AbstractDeployment(Injector parent, Properties p, ClassLoader loader) {
         this.parentInjector = parent;
         this.properties = p;
-        this.classLoader = new PluginClassLoader(AbstractDeployment.class.getClassLoader(), properties.getProperty("directory"));
+        this.classLoader = loader;
     }
 
     @Override

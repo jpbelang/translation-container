@@ -19,18 +19,16 @@ import java.util.Map;
 public class ContainerImpl implements Container {
 
     private final EventBus bus;
-    private final DeploymentFactory factory;
     private final ConfigurationManager configurationManager;
-    private List<Deployment> contexts = new ArrayList<>();
+    private Map<String, Deployment> contexts = new HashMap<>();
     private Map<String, Deployment> egressHandlers = new HashMap<>();
     private Map<String, Deployment> ingressHandlers = new HashMap<>();
 
 
     @Inject
-    public ContainerImpl(DeploymentFactory fac, ConfigurationManager cm, EventBus bus) {
+    public ContainerImpl(ConfigurationManager cm, EventBus bus) {
 
         this.bus = bus;
-        this.factory = fac;
         this.configurationManager = cm;
     }
 
@@ -40,6 +38,7 @@ public class ContainerImpl implements Container {
         configurationManager.configure(this);
         ingressHandlers.forEach((x, y) -> y.deploy(this));
         egressHandlers.forEach((x,y) -> y.deploy(this));
+        contexts.forEach((x,y) -> y.deploy(this));
         bus.fireEvent(new ProtocolStartupEvent(this));
     }
 
@@ -49,9 +48,9 @@ public class ContainerImpl implements Container {
     }
 
     @Override
-    public void addContext(Deployment c) {
+    public void addContext(String name, Deployment c) {
 
-        contexts.add(c);
+        contexts.put(name, c);
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface Container {
     void stop();
 
     // Experimental
-    void addContext(Deployment c);
+    void addContext(String name, Deployment c);
     void addIngressProtocolHandlerDeployment(String name, Deployment d);
     void addEgressProtocolHandlerDeployment(String name, Deployment d);
 

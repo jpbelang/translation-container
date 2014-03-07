@@ -2,10 +2,8 @@ package ca.eloas.translets.container.impl;
 
 import ca.eloas.translets.container.Container;
 import ca.eloas.translets.container.ContainerException;
-import ca.eloas.translets.container.Deployer;
 import ca.eloas.translets.container.Deployment;
 import ca.eloas.translets.container.DeploymentFactory;
-import ca.eloas.translets.container.DeploymentManager;
 import ca.eloas.translets.container.ProtocolStartupEvent;
 import ca.eloas.translets.container.events.EventBus;
 import com.google.inject.Inject;
@@ -18,7 +16,7 @@ import java.util.Map;
 /**
  * @author JP
  */
-public class ContainerImpl implements Container, DeploymentManager {
+public class ContainerImpl implements Container {
 
     private final EventBus bus;
     private final DeploymentFactory factory;
@@ -43,11 +41,6 @@ public class ContainerImpl implements Container, DeploymentManager {
         ingressHandlers.forEach((x, y) -> y.deploy(this));
         egressHandlers.forEach((x,y) -> y.deploy(this));
         bus.fireEvent(new ProtocolStartupEvent(this));
-    }
-
-    @Override
-    public Deployer attach(Object o) {
-        return null;
     }
 
     @Override

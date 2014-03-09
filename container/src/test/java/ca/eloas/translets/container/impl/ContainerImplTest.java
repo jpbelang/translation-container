@@ -1,17 +1,14 @@
 package ca.eloas.translets.container.impl;
 
 import ca.eloas.translets.container.Deployment;
-import ca.eloas.translets.container.EgressProtocolHandler;
 import ca.eloas.translets.container.EgressProtocolHandlerDeployment;
-import ca.eloas.translets.container.IngressProtocolHandler;
+import ca.eloas.translets.container.IngressProtocolHandlerDeployment;
 import ca.eloas.translets.container.ProtocolStartupEvent;
 import ca.eloas.translets.container.events.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Properties;
 
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -48,8 +45,8 @@ public class ContainerImplTest {
     @Test
     public void testAllDeploymentsHappen() throws Exception {
 
-        Deployment eph = mock(Deployment.class);
-        Deployment iph = mock(Deployment.class);
+        EgressProtocolHandlerDeployment eph = mock(EgressProtocolHandlerDeployment.class);
+        IngressProtocolHandlerDeployment iph = mock(IngressProtocolHandlerDeployment.class);
         Deployment ctx = mock(Deployment.class);
 
         ContainerImpl ci = new ContainerImpl(manager, bus);

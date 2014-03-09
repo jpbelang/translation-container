@@ -12,8 +12,10 @@ public interface Container {
 
     // Experimental
     void addContext(String name, Deployment c);
-    void addIngressProtocolHandlerDeployment(String name, Deployment d);
-    void addEgressProtocolHandlerDeployment(String name, Deployment d);
+    void addIngressProtocolHandlerDeployment(String name, IngressProtocolHandlerDeployment d);
+    void addEgressProtocolHandlerDeployment(String name, EgressProtocolHandlerDeployment d);
 
     EventBus getEventBus();
+    IngressProtocolHandlerDeployment getIngressDeployment(String ingress);
+    EgressProtocolHandlerDeployment getEgressDeployment(String egress);
 }

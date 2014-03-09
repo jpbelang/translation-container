@@ -20,16 +20,16 @@ public class AbstractDeploymentTest {
     public void deployCreatesModuleAndCreatesComponent() throws Exception {
 
 
-        EgressProtocolHandlerDeployment epd = mock(EgressProtocolHandlerDeployment.class, withSettings().verboseLogging());
+        EgressProtocolHandlerDeploymentImpl epd = mock(EgressProtocolHandlerDeploymentImpl.class, withSettings().verboseLogging());
         Injector injector = mock(Injector.class, withSettings().verboseLogging());
         when(injector.createChildInjector(isA(FakeModule.class))).thenReturn(injector);
 
         Properties p = new Properties();
         p.setProperty("moduleName", FakeModule.class.getName());
 
-        AbstractDeployment<EgressProtocolHandlerDeployment> ad = new AbstractDeployment<EgressProtocolHandlerDeployment>(injector, p, AbstractDeploymentTest.class.getClassLoader()) {
+        AbstractDeployment<EgressProtocolHandlerDeploymentImpl> ad = new AbstractDeployment<EgressProtocolHandlerDeploymentImpl>(injector, p, AbstractDeploymentTest.class.getClassLoader()) {
             @Override
-            protected EgressProtocolHandlerDeployment createComponent(Injector childInjector) {
+            protected EgressProtocolHandlerDeploymentImpl createAndDeployComponent(Container container, Injector childInjector) {
 
                 assertSame(childInjector, injector);
                 return epd;

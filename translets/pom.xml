@@ -12,6 +12,10 @@
 
     <artifactId>translets-examples</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
+    <modules>
+        <module>example-translator</module>
+    </modules>
     
 </project>

@@ -2,7 +2,6 @@ package ca.eloas.translets.container;
 
 import com.google.inject.Injector;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.Properties;
 
@@ -25,9 +24,9 @@ public class EgressProtocolHandlerDeploymentTest {
         when((i.getInstance(EgressProtocolHandler.class))).thenReturn(ep);
 
         Properties p = new Properties();
-        EgressProtocolHandlerDeployment eph = new EgressProtocolHandlerDeployment(i, p, EgressProtocolHandlerDeploymentTest.class.getClassLoader());
+        EgressProtocolHandlerDeploymentImpl eph = new EgressProtocolHandlerDeploymentImpl(i, p, EgressProtocolHandlerDeploymentTest.class.getClassLoader());
 
-        EgressProtocolHandler handler = eph.createComponent(i);
+        EgressProtocolHandler handler = eph.createAndDeployComponent(null, i); //doesn't use container
 
         verify(ep).deploy(p);
         assertSame(ep, handler);

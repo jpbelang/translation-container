@@ -30,7 +30,7 @@ abstract public class AbstractDeployment<T> implements Deployment {
             Module module = (Module) classLoader.loadClass(properties.getProperty("moduleName")).newInstance();
             childInjector = parentInjector.createChildInjector(module);
 
-            component = createComponent(childInjector);
+            component = createAndDeployComponent(container, childInjector);
         } catch (Exception e) {
 
             throw new DeploymentException(e);
@@ -39,7 +39,7 @@ abstract public class AbstractDeployment<T> implements Deployment {
     }
 
 
-    abstract protected T createComponent(Injector childInjector);
+    abstract protected T createAndDeployComponent(Container container, Injector childInjector);
 
     @Override
     public void undeploy(Container manager) {

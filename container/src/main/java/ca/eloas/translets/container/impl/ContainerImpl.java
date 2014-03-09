@@ -3,14 +3,13 @@ package ca.eloas.translets.container.impl;
 import ca.eloas.translets.container.Container;
 import ca.eloas.translets.container.ContainerException;
 import ca.eloas.translets.container.Deployment;
-import ca.eloas.translets.container.DeploymentFactory;
+import ca.eloas.translets.container.EgressProtocolHandlerDeployment;
+import ca.eloas.translets.container.IngressProtocolHandlerDeployment;
 import ca.eloas.translets.container.ProtocolStartupEvent;
 import ca.eloas.translets.container.events.EventBus;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +20,8 @@ public class ContainerImpl implements Container {
     private final EventBus bus;
     private final ConfigurationManager configurationManager;
     private Map<String, Deployment> contexts = new HashMap<>();
-    private Map<String, Deployment> egressHandlers = new HashMap<>();
-    private Map<String, Deployment> ingressHandlers = new HashMap<>();
+    private Map<String, EgressProtocolHandlerDeployment> egressHandlers = new HashMap<>();
+    private Map<String, IngressProtocolHandlerDeployment> ingressHandlers = new HashMap<>();
 
 
     @Inject
@@ -54,13 +53,13 @@ public class ContainerImpl implements Container {
     }
 
     @Override
-    public void addIngressProtocolHandlerDeployment(String name, Deployment deployment) {
+    public void addIngressProtocolHandlerDeployment(String name, IngressProtocolHandlerDeployment deployment) {
 
         ingressHandlers.put(name, deployment);
     }
 
     @Override
-    public void addEgressProtocolHandlerDeployment(String name, Deployment deployment) {
+    public void addEgressProtocolHandlerDeployment(String name, EgressProtocolHandlerDeployment deployment) {
 
         egressHandlers.put(name, deployment);
     }
@@ -68,5 +67,15 @@ public class ContainerImpl implements Container {
     @Override
     public EventBus getEventBus() {
         return bus;
+    }
+
+    @Override
+    public IngressProtocolHandlerDeployment getIngressDeployment(String ingress) {
+        return ingressHandlers.get(ingress);
+    }
+
+    @Override
+    public EgressProtocolHandlerDeployment getEgressDeployment(String egress) {
+        return egressHandlers.get(egress);
     }
 }

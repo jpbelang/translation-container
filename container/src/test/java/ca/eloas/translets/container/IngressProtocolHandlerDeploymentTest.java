@@ -22,9 +22,9 @@ public class IngressProtocolHandlerDeploymentTest {
         when((i.getInstance(IngressProtocolHandler.class))).thenReturn(ep);
 
         Properties p = new Properties();
-        IngressProtocolHandlerDeployment iph = new IngressProtocolHandlerDeployment(i, p, IngressProtocolHandlerDeploymentTest.class.getClassLoader());
+        IngressProtocolHandlerDeploymentImpl iph = new IngressProtocolHandlerDeploymentImpl(i, p, IngressProtocolHandlerDeploymentTest.class.getClassLoader());
 
-        IngressProtocolHandler handler = iph.createComponent(i);
+        IngressProtocolHandler handler = iph.createAndDeployComponent(null, i);    // doesn't use container
 
         verify(ep).deploy(eq(p), any(Receiver.class));
         assertSame(ep, handler);
